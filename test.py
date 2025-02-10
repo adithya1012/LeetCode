@@ -1,5 +1,5 @@
 class BeverageManager:
-    def __init__(self):
+    def __init__(self): 
         self.store_orders = {}  # {storeId: {beverageName: quantity}}
         self.limits = {"number_of_stores": 0, "per_beverage_total": 0}
 
