@@ -22,12 +22,22 @@ def one_char_away(str1, str2):
         return False
     update = False
     for i in range(len(str1)):
-        if str1[i] != str2[i]:
-            if update:
+        if i < len(str2):
+            if str1[i] != str2[i]:
+                if update:
+                    return False
+                else:
+                    # insert
+                    if i+1 < len(str2) and str2[i+1] == str1[i]:
+                        str2 = str2[0:i]+str2[i+1:]
+                    # delete
+                    if i+1 < len(str1) and str1[i+1] == str2[i]:
+                        str2 = str2[0:i] + "X" + str2[i:]
+                    update = True
+        else:
+            if len(str2[i:]) > 1 or update:
                 return False
-            if i+1 < len(str2) and str2[i+1] == str1[i]:
-                str2 = str2[0:i]+str2[i+1:]
-            else:
-                return False
-            update = True
     return True
+
+print(one_char_away( "aaa", "aaaaa" ))
+
