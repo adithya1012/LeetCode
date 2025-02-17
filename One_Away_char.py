@@ -39,5 +39,5 @@ def one_char_away(str1, str2):
                 return False
     return True
 
-print(one_char_away( "aaa", "aaaaa" ))
+print(one_char_away( "baaa", "aaa" ))
 
