@@ -16,7 +16,7 @@ def LL_intersect(node1, node2):
     last1 = node1
     while last1:
         last1 = last1.next
-        len1+=1
+        len1 += 1
 
     last2 = node2
     while last2:
