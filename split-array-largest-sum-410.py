@@ -3,6 +3,7 @@ def splitArray(nums, k):
     l = max(nums)
     r = sum(nums)
     res = float('inf')
+
     def find_split(capacity):
         total = 0
         split = 0
@@ -14,19 +15,16 @@ def splitArray(nums, k):
                 split += 1
                 total = nums[i]
 
-
         return max(max_val, total), split + 1
 
-    while l<=r:
-        m = (l+r)//2
+    while l <= r:
+        m = l + (r - l) // 2
         val, split = find_split(m)
-        if split == k:
-            r = m-1
-            res = min(res, val)
-        elif split < k:
-            l = m+1
+        if split <= k:
+            r = m - 1
+            res = val
         else:
-            r = m-1
+            l = m + 1
     return res
 
-print(splitArray([1,4,4], 3))
+print(splitArray([20,4,4,7], 3))
