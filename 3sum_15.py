@@ -1,17 +1,24 @@
 
-# def threeSum(nums):
-#     res = []
-#     for i in range(len(nums)):
-#         for j in range(i+1, len(nums)):
-#             for k in range(j+1, len(nums)):
-#                 if nums[i] + nums[j] + nums[k] == 0 and sorted([nums[i],nums[j],nums[k]]) not in res:
-#                     res.append(sorted([nums[i],nums[j],nums[k]]))
-#     return res
+def threeSum(nums):
+    nums.sort()
+    res = []
+    for i,first in enumerate(nums):
+        if i>0 and first == nums[i-1]:
+            continue
+        l, r = i+1, len(nums)-1
+        while l<r:
+            total = first+nums[l]+nums[r]
+            if total == 0:
+                res.append([first, nums[l], nums[r]])
+                l+=1
+                # r-=1
+                while l<r and nums[l]==nums[l-1]:
+                    l+=1
+            elif total > 0:
+                r-=1
+            else:
+                l+=1
+    return res
 
-
-'''
-Above solution is time limit exceeding. O(n cube)
-'''
-
-# def threeSum(nums):
+threeSum([-1,0,1,2,-1,-4])
 
