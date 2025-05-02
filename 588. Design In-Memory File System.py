@@ -1,40 +1,44 @@
-import collections
+from collections import defaultdict
 import bisect
-
 
 class FileSystem:
 
     def __init__(self):
-        self.files = collections.defaultdict(str)  # Stores the contnet.
-        self.paths = collections.defaultdict(list)  # Stores the ls in each path.
+        self.path = defaultdict(str)
+        self.folder = defaultdict(list)
+        # self.folder["/"] = []
 
     def ls(self, path: str):
-        if path in self.files:
-            return [path.split("/")[-1]]
-        return self.paths[path]
+        fullPath = path.split("/")
+        # print(path, self.folder)
+        if path in self.path:
+            return [fullPath[-1]]
+        return self.folder[path]
 
     def mkdir(self, path: str) -> None:
-        curPaths = path.split("/")
+        fullPath = path.split("/")
+        for i in range(1, len(fullPath)):
+            tmpPath = "/".join(fullPath[:i]) or "/"
+            if tmpPath not in self.folder or fullPath[i] not in self.folder[tmpPath]:
+                bisect.insort(self.folder[tmpPath], fullPath[i])
 
-        for i in range(1, len(curPaths)):
-            cur = "/".join(curPaths[:i]) or "/"
-            if cur not in self.paths or curPaths[i] not in self.paths[cur]:
-                bisect.insort(self.paths[cur], curPaths[i])
 
     def addContentToFile(self, filePath: str, content: str) -> None:
-        # print(self.paths)
-        if filePath not in self.files:
+        if filePath not in self.path:
             self.mkdir(filePath)
-
-        self.files[filePath] += content
+        self.path[filePath] += content
 
     def readContentFromFile(self, filePath: str) -> str:
-        return self.files[filePath]
+        return self.path[filePath]
+
 
 # Your FileSystem object will be instantiated and called as such:
-obj = FileSystem()
-param_1 = obj.ls("/")
-obj.mkdir("/a/b/c")
-obj.addContentToFile( "/a/b/c/d", "hello")
-param_4 = obj.readContentFromFile("/a/b/c/d")
-print(param_4)
+# obj = FileSystem()
+# print(obj.ls("/"))
+# print(obj.mkdir("/a/b/c"))
+
+a = ["", "a", "b", "c"]
+for i in range(1, len(a)):
+    print(a[:i])
+    tmp = "/".join(a[:i]) or "/"
+    print(tmp)
