@@ -1,3 +1,4 @@
+from collections import defaultdict, Counter
 def min_swaps_to_sort_with_zero(arr):
     n = len(arr)
     sorted_arr = sorted([x for x in arr if x != 0]) + [0] * arr.count(0)
