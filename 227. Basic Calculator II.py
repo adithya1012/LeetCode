@@ -20,5 +20,5 @@ def calculate(s):
             nums = 0
     return sum(stack)
 
-print(calculate("14-3/2"))
+print(calculate("1-3+2*2"))
 
