@@ -14,9 +14,7 @@
 #
 #     def test_add2Negetive(self):
 #         self.assertEqual(add2No(-10, -20), -30)
-#
-#
-#
+
 # if "__mani__" == __name__:
 #     unittest.main()
 
