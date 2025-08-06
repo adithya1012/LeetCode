@@ -1,5 +1,5 @@
 # Liscov tells that: class B extends class A then if there is a situation we need to replace class B
-# with class A it should not break. So it will happen if we narrow down the abobilty of parent class.
+# with class A it should not break. So it will happen if we narrow down the ability of parent class.
 
 # example 1:
 class Bike:
