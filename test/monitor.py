@@ -11,14 +11,14 @@ from pathlib import Path
 class ProcessMonitor:
     def __init__(self, program_name):
         self.program_name = program_name
-        self.state_dir = Path.home() / '.forever_monitor'
+        self.state_dir = Path('./forever_monitor')
         self.state_file = self.state_dir / 'processes.json'
         self.running = True
 
         # Ensure state directory exists
         self.state_dir.mkdir(exist_ok=True)
 
-        # Set up signal handlers
+        # Set up signal handlers - only for monitor itself
         signal.signal(signal.SIGTERM, self.stop_monitoring)
         signal.signal(signal.SIGINT, self.stop_monitoring)
 
@@ -59,13 +59,13 @@ class ProcessMonitor:
     def restart_process(self, process_info):
         """Restart a dead process"""
         argument = process_info['argument']
-        print(f"Restarting: {self.program_name} {argument}")
+        print(f"Attempting to restart: {self.program_name} {argument}")
 
         try:
             # Start the process
             cmd = [sys.executable, f"{self.program_name}.py", argument]
-            subprocess.Popen(cmd)
-            print(f"Successfully restarted {self.program_name} {argument}")
+            result = subprocess.Popen(cmd)
+            print(f"Successfully started {self.program_name} {argument} with PID {result.pid}")
             return True
         except Exception as e:
             print(f"Failed to restart {self.program_name} {argument}: {e}")
@@ -77,23 +77,33 @@ class ProcessMonitor:
 
         while self.running:
             processes = self.load_processes()
-            updated = False
+            dead_processes = []
+            alive_processes = {}
 
             # Check each tracked process
-            for pid, info in list(processes.items()):
-                if not self.is_process_running(pid):
+            for pid, info in processes.items():
+                if self.is_process_running(pid):
+                    # Process is still alive, keep it
+                    alive_processes[pid] = info
+                else:
+                    # Process is dead, mark for restart
                     print(f"Process {pid} ({self.program_name} {info['argument']}) is dead")
+                    dead_processes.append(info)
 
-                    # Remove dead process from tracking
-                    del processes[pid]
-                    updated = True
-
-                    # Restart the process
-                    self.restart_process(info)
-
-            # Save updated process list if changed
-            if updated:
+            # Restart dead processes
+            for info in dead_processes:
+                print("Removing : ", str(info["pid"]))
+                processes.pop(str(info["pid"]))
+                print(f"Restarting: {self.program_name} {info['argument']}")
+                self.restart_process(info)
                 self.save_processes(processes)
+                # Give time for new process to start and register itself
+                time.sleep(0.5)
+
+            # If there were changes, reload the processes to get new PIDs
+            if dead_processes:
+                # Small delay to let new processes register
+                time.sleep(1.5)
 
             # Wait before next check
             time.sleep(2)

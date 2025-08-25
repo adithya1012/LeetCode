@@ -9,7 +9,7 @@ from pathlib import Path
 
 def create_state_file():
     """Create or update the state file with process info"""
-    state_dir = Path.home() / '.forever_monitor'
+    state_dir = Path('./forever_monitor')
     state_dir.mkdir(exist_ok=True)
     state_file = state_dir / 'processes.json'
 
@@ -35,25 +35,27 @@ def create_state_file():
 
 
 def cleanup_on_exit(signum, frame):
-    """Remove this process from state file when killed"""
-    state_dir = Path.home() / '.forever_monitor'
+    """Just exit gracefully - let monitor handle the restart"""
+    print(f"Forever process {os.getpid()} received signal {signum}, exiting...")
+    state_dir = Path('./forever_monitor')
+    state_dir.mkdir(exist_ok=True)
     state_file = state_dir / 'processes.json'
 
+    processes = {}
     if state_file.exists():
         try:
             with open(state_file, 'r') as f:
                 processes = json.load(f)
-
-            # Remove current process
-            processes.pop(str(os.getpid()), None)
-
-            with open(state_file, 'w') as f:
-                json.dump(processes, f, indent=2)
         except (json.JSONDecodeError, IOError):
-            pass
+            processes = {}
 
+    del processes[str(os.getpid())]
+    try:
+        with open(state_file, 'w') as f:
+            json.dump(processes, f, indent=2)
+    except (json.JSONDecodeError, IOError):
+        print("Unable to remove the os pid")
     sys.exit(0)
-
 
 def main():
     if len(sys.argv) != 2:
@@ -84,11 +86,15 @@ def main():
     # Record this process in state file
     create_state_file()
 
-    print(f"Forever process {os.getpid()} running with argument: {argument}")
+    print(f"Forever process {os.getpid()} running with argument: {argument} (registered in JSON)")
 
     # Run forever loop
-    while True:
-        time.sleep(1)
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print(f"Forever process {os.getpid()} interrupted")
+        sys.exit(0)
 
 
 if __name__ == "__main__":

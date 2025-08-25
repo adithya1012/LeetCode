@@ -1,10 +1,11 @@
-# This principle tess that Interfaces such that the client/child classes should not implement unnecessary
+
+# This principle tells that Interfaces such that the client/child classes should not implement unnecessary
 # functions they do not need.
 
-# Say in the previous example we have 2 factor acuthentication present as part of payment processing as abstract
-# classes. So all the child classes are compelled to implement the 2 factor auth. But credict card do not require any
-# 2 factor acuth. So it will define it and infunction body it may throw error or leave withput doing any operation.
-# this is a bad approch and this needs to be handles through creating the subclasses in the interface level so that
+# Say in the previous example we have 2-factor authentication present as part of payment processing as abstract
+# classes. So all the child classes are compelled to implement the 2-factor auth. But credict card do not require any
+# 2-factor auth. So it will define it and injunction body it may throw error or leave without doing any operation.
+# this is a bad approach and this needs to be handles through creating the subclasses in the interface level so that
 # correct abstract class will be extended.
 
 
