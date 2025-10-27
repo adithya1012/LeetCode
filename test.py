@@ -1,35 +1,17 @@
-from abc import ABC, abstractmethod
-import enum
+def solution(A):
+  """Your solution goes here."""
+  if not A:
+    return 0
+  res = [[A[0]]]
+  for h in A[1:]:
+    inserted = False
+    for lst in res:
+      if lst[-1] > h:
+        lst.append(h)
+        inserted = True
+        break
+    if not inserted:
+      res.append([h])
+  return len(res)
 
-
-class Vehicle_Type(enum.Enum):
-    CAR = 2
-    BIKE = 1
-    TRUCK = 3
-
-class Vehicle:
-    def __init__(self, type, number_plate):
-        self.type = type
-        self.number_plate = number_plate
-
-    @abstractmethod
-    def number_of_wheel(self):
-        pass
-
-    def contat(self):
-        print("To book any vehicle call 26051519876")
-
-class Car(Vehicle):
-    def __init__(self, number_plate):
-        super().__init__(Vehicle_Type.CAR, number_plate)
-
-    def number_of_wheel(self):
-        print("There are 4 wheels in this vehicle")
-
-
-
-if __name__ == "__main__":
-    obj = Car("ABCDCAR")
-    obj.contat()
-    obj.number_of_wheel()
-
+print(solution([1,1,1,1,1]))
