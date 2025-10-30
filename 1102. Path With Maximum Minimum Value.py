@@ -27,3 +27,7 @@ def maximumMinimumPath(grid) -> int:
 
     dfs(0, 0, grid[0][0])
     return min_val
+
+test = False
+
+print(not test)
