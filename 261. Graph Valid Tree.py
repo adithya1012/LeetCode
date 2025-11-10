@@ -23,4 +23,3 @@ def validTree(n, edges):
     return True
 
 
-validTree(n, edges)
