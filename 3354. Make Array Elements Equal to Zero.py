@@ -1,33 +1,21 @@
 
-def countValidSelections(nums):
-    def simulate(i, direction, lst):
-        while i < len(lst) and i >= 0:
-            if lst[i] != 0:
-                break
-            if direction == 1:
-                i += 1
-            else:
-                i -= 1
-        if i >= len(lst) or i < 0:
-            if sum(lst):
-                return False
-            else:
-                return True
-        # print(i)
-        lst[i] -= 1
-        direction = -direction
-        i += direction
-        return simulate(i, direction, lst)
-
+def countValidSelections(nums) -> int:
+    n = len(nums)
+    total = sum(nums)
+    prefix_sum = [nums[0]] * (n + 1)
+    for i in range(1, n):
+        prefix_sum[i+1] = prefix_sum [i] + nums[i]
+    print(prefix_sum)
     count = 0
-    for i in range(len(nums)):
-        if nums[i] == "0":
-            tmp = nums.copy()
-            if simulate(i, 1, tmp):
+    for i in range(n):
+        if nums[i] == 0:
+            if prefix_sum[i] == (total - prefix_sum[i]):
+                count += 2
+            elif prefix_sum[i] == (total - prefix_sum[i] - 1):
                 count += 1
-            tmp = nums.copy()
-            if simulate(i, -1, tmp):
+            elif prefix_sum[i] - 1 == (total - prefix_sum[i]):
                 count += 1
+
     return count
 
 print(countValidSelections([1,0,2,0,3]))
