@@ -30,4 +30,4 @@ class Solution:
         return list(safe)
 
 
-print(Solution().eventualSafeNodes(graph = [[1,2],[2,3],[5],[0],[5],[],[]]) )
+print(Solution().eventualSafeNodes(graph = [[1,2],[2,3],[5],[0],[5],[],[]]))
