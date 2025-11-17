@@ -4,10 +4,7 @@
 #         self.val = val
 #         self.next = next
 from typing import Optional
-
 from LL_intersect import ListNode
-
-
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         l, r = None, head
