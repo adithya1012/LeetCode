@@ -1,17 +1,8 @@
-def solution(A):
-  """Your solution goes here."""
-  if not A:
-    return 0
-  res = [[A[0]]]
-  for h in A[1:]:
-    inserted = False
-    for lst in res:
-      if lst[-1] > h:
-        lst.append(h)
-        inserted = True
-        break
-    if not inserted:
-      res.append([h])
-  return len(res)
+import heapq
 
-print(solution([1,1,1,1,1]))
+class node:
+  def __init__(self):
+    pass
+test = [[1, node()], [1, node()]]
+heapq.heapify(test)
+print(test)
