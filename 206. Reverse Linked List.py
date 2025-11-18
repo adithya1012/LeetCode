@@ -13,4 +13,5 @@ class Solution:
             r.next = l
             l = r
             r = tmp
+
         return l
