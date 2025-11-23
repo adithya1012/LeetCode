@@ -1,18 +1,28 @@
+from typing import List
 
-def lengthOfLIS(nums) -> int:
-    res = 0
-    stack = []
-    def dfs(i):
-        if i >= len(nums):
-            nonlocal res
-            res = max(len(stack), res)
-            return
-        if not stack or stack[-1] < nums[i]:
-            stack.append(nums[i])
-            dfs(i+1)
-            stack.pop()
-        dfs(i+1)
-    dfs(0)
-    return res
 
-lengthOfLIS([0,1,0,3,2,3])
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+
+        memo = {}
+
+        def dfs(i):
+            if i >= len(nums):
+                return 0
+            if i in memo:
+                return memo[i]
+            consider = 1
+            for j in range(i + 1, len(nums)):
+                if nums[j] > nums[i]:
+                    consider = max(consider, 1 + dfs(j))
+            memo[i] = consider
+            return consider
+
+        res = 0
+        for i in range(len(nums)):
+            res = max(res, dfs(i))
+        print(memo)
+        return res
+
+
+print(Solution().lengthOfLIS([4,10,4,3,8,9]))
