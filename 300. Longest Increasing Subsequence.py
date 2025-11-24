@@ -25,4 +25,8 @@ class Solution:
         return res
 
 
-print(Solution().lengthOfLIS([4,10,4,3,8,9]))
+# print(Solution().lengthOfLIS([4,10,4,3,8,9]))
+
+a = [3,4,2,5,1]
+print(a)
+print(sorted(a))
