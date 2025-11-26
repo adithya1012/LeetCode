@@ -1,6 +1,12 @@
 # Q: Given graph of cities and time taken to travel between them.
 # You have given source city A and list of favourite cities.
 # Output the smallest time taken to reach any of the favourite cities from city A.
+# Sol:- Simple Dijkstra.
+
+
+# https://claude.ai/chat/9b63b7bb-4a3b-45e0-b146-d3591859647d
+
+
 from collections import defaultdict
 import heapq
 
@@ -115,3 +121,7 @@ print("Method 2:", sol.shortest_distance_fav_2('A', 'E'))  # Should be 16
 
 # Follow Up: Now in the same network of cities, you have given city S and city T and list of favourite cities.
 # We have to give the shortest path from city S to city T which must go through at-least one of the favourite city.
+# Sol:-
+# 1. Using Floyd Warshall (N^3)
+# 2. Using Dijkstra's twice , once from city S and once from city T and then loop over favourtite cities for shortest distance.
+
