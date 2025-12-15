@@ -16,3 +16,13 @@ class Solution:
 
 
 # print(Solution().maxRunTime(2, [1,1,1,1]))
+
+all_pairs_count = [2,3,4]
+
+res = 0
+suffix_sum = 0
+for val in all_pairs_count:
+    res = res + val * suffix_sum
+    suffix_sum += val
+
+print(res)
