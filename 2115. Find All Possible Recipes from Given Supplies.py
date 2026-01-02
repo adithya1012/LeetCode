@@ -35,4 +35,3 @@ class Solution:
 
 print(Solution().findAllRecipes(recipes = ["bread"], ingredients = [["yeast","flour"]], supplies = ["yeast","flour","corn"]))
 
-
