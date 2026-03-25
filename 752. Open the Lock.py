@@ -1,32 +1,31 @@
+
+# You are given a list of scheduled ad campaigns, each with a (start_time, end_time) in seconds. Return the minimum number of parallel ad slots required to run all campaigns without time overlap.
+
+
+# Input: [(1, 5), (3, 6), (7, 9)]
+# Output: 2
+# Explanation: 
+# [1,5] and [3,6] overlap → need 2 slots
+# [7,9] starts after → reuse
+
 class Solution:
-    def openLock(self, deadends, target: str) -> int:
-        deadends = set(deadends)
-        if target in deadends:
-            return -1
+    def __init__(self):
+        pass
 
-        dp = {}
+    def scheduler(self, timings):
+        start = sorted([i[0] for i in timings])
+        end = sorted([i[1] for i in timings])
 
-        def dfs(seq):
-            if seq == target:
-                return 0
-            if seq in deadends:
-                return float("inf")
-            if seq in dp:
-                return dp[seq]
-
-            total = float("inf")
-            for i in range(len(seq)):
-                new_seq = seq[:i] + str((int(seq[i]) + 1) % 10) + seq[i + 1:]
-                total = min(total, 1 + dfs(new_seq))
-                new_seq = seq[:i] + str((int(seq[i]) - 1) % 10) + seq[i + 1:]
-                total = min(total, 1 + dfs(new_seq))
-            dp[seq] = total
-            return dp[seq]
-
-        return dfs("0000")
+        res = 0
+        s, e = 0, 0
+        while s < len(start):
+            if start[s] < end[e]:
+                s+=1
+            else:
+                e+=1
+            res = max(s - e, res)
+        print(res)
 
 
-
-# print(Solution().openLock(deadends = ["0201","0101","0102","1212","2002"], target = "0202"))
-
-print(0 % 10)
+Solution().scheduler([(1, 5), (3, 6), (7, 9)])
+# Solution().scheduler([(1, 5), (5,6)]) # 1
