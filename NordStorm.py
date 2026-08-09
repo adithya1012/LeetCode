@@ -43,4 +43,4 @@ orders = [
     "Marcus, 5, Sparkling Water"
 ]
 
-# print(process_orders(orders))
+print(process_orders(orders))
