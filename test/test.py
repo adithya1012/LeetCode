@@ -80,59 +80,126 @@ import concurrent.futures
 
 
 
-class BoundedBuffer:
-    def __init__(self, capacity):
-        self.capacity = capacity
-        self.items = []
-        self.condition = threading.Condition()
+# class BoundedBuffer:
+#     def __init__(self, capacity):
+#         self.capacity = capacity
+#         self.items = []
+#         self.condition = threading.Condition()
+#
+#     def producer(self, value):
+#         with self.condition:
+#             while len(self.items) >= self.capacity:
+#                 print(f"Producer waiting (buffer full): {self.items}")
+#                 self.condition.wait()
+#
+#
+#             self.items.append(value)
+#             self.condition.notify()
+#             print(f"Producing {value}", self.items)
+#
+#         # print("PRODUCER OUTSIDE")
+#
+#     def consumer(self):
+#         with self.condition:
+#             while not self.items:
+#                 print("Consumer waiting (buffer empty)")
+#                 self.condition.wait()
+#
+#             value = self.items.pop(0)
+#             print(f"Consumed {value}", self.items)
+#
+#             self.condition.notify()
+#             # return value
+#         # print("Consumer OUTSIDE")
+#
+# buffer = BoundedBuffer(2)
+#
+# def producer_thread():
+#     for i in range(5):
+#         time.sleep(0.1)
+#         buffer.producer(i)
+#
+# def consumer_thread():
+#     for _ in range(5):
+#         time.sleep(0.2)
+#         buffer.consumer()
+#
+# p = threading.Thread(target=producer_thread)
+# c = threading.Thread(target=consumer_thread)
+#
+# p.start()
+# c.start()
+#
+# # p.join()
+# # c.join()
 
-    def producer(self, value):
-        with self.condition:
-            while len(self.items) >= self.capacity:
-                print(f"Producer waiting (buffer full): {self.items}")
-                self.condition.wait()
 
 
-            self.items.append(value)
-            self.condition.notify()
-            print(f"Producing {value}", self.items)
-
-        # print("PRODUCER OUTSIDE")
-
-    def consumer(self):
-        with self.condition:
-            while not self.items:
-                print("Consumer waiting (buffer empty)")
-                self.condition.wait()
-
-            value = self.items.pop(0)
-            print(f"Consumed {value}", self.items)
-
-            self.condition.notify()
-            # return value
-        # print("Consumer OUTSIDE")
-
-buffer = BoundedBuffer(2)
-
-def producer_thread():
-    for i in range(5):
-        time.sleep(0.1)
-        buffer.producer(i)
-
-def consumer_thread():
-    for _ in range(5):
-        time.sleep(0.2)
-        buffer.consumer()
-
-p = threading.Thread(target=producer_thread)
-c = threading.Thread(target=consumer_thread)
-
-p.start()
-c.start()
-
-# p.join()
-# c.join()
+# import threading
+# import time
+#
+# sem = threading.Semaphore(2)
+#
+# def worker(i):
+#     print(f"{i} waiting")
+#
+#     with sem:
+#         print(f"{i} entered")
+#         time.sleep(3)
+#         print(f"{i} leaving")
+#
+# for i in range(5):
+#     threading.Thread(target=worker, args=(i,)).start()
 
 
+# import threading
+# import time
+#
+# event = threading.Event()
+#
+# def worker():
+#     print("Worker waiting...")
+#     event.wait()
+#     print("Worker started!")
+#
+# t1 = threading.Thread(target=worker)
+# # t2 = threading.Thread(target=worker).start()
+# t1.start()
+# # t1.join()
+#
+# time.sleep(3)
+#
+# print("Main: Go!")
+# event.set()
+
+
+import threading
+import queue
+import time
+
+q = queue.Queue()
+
+def worker():
+    while True:
+        item = q.get()
+
+        print(f"Working on {item}")
+        time.sleep(1)
+
+        print(f"Finished {item}")
+
+        q.task_done()
+
+threading.Thread(target=worker, daemon=True).start()
+
+for i in range(5):
+    print("Adding to the queue:", i)
+    q.put(i)
+
+print("Main waiting...")
+
+q.join()
+
+print("All jobs finished!")
 
 
